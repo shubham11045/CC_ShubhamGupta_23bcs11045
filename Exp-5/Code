@@ -1,0 +1,41 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+        sc.nextLine();
+
+        String[] memory = new String[n];
+        for (int i = 0; i < n; i++) {
+            memory[i] = sc.nextLine();
+        }
+
+        while (m-- > 0) {
+            String query = sc.nextLine();
+            boolean found = false;
+
+            for (int i = 0; i < n && !found; i++) {
+                if (memory[i].length() != query.length())
+                    continue;
+
+                int diff = 0;
+                for (int j = 0; j < query.length(); j++) {
+                    if (memory[i].charAt(j) != query.charAt(j)) {
+                        diff++;
+                        if (diff > 1)
+                            break;
+                    }
+                }
+
+                if (diff == 1)
+                    found = true;
+            }
+
+            System.out.println(found ? "YES" : "NO");
+        }
+
+        sc.close();
+    }
+}
