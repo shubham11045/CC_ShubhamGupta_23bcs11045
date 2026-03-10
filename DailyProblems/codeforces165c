@@ -1,0 +1,40 @@
+##Another_ON_Strings
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class q165c{
+    static long atMost(String s, int k) {
+        if (k < 0) return 0;
+
+        int left = 0, ones = 0;
+        long count = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+
+            if (s.charAt(right) == '1')
+                ones++;
+
+            while (ones > k) {
+                if (s.charAt(left) == '1')
+                    ones--;
+                left++;
+            }
+
+            count += right - left + 1;
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int k = sc.nextInt();
+        String s = sc.next();
+
+        long ans = atMost(s, k) - atMost(s, k - 1);
+
+        System.out.println(ans);
+    }
+}
