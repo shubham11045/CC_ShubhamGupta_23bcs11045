@@ -1,0 +1,29 @@
+import java.util.*;
+public class Play {
+    public static int play(int nums[], int p){
+        Arrays.sort(nums);
+        int score=0;
+        int ms = Integer.MIN_VALUE;
+        int l =0;
+        int r = nums.length-1;
+        while(l<=r){
+            if(p>=nums[l]){
+                p-=nums[l++];
+                ++score;
+                ms =Math.max(score,ms);
+            }else if(score>0){
+              p+=nums[r--];
+              --score;
+            }else{
+                break;
+            }
+        }
+        return score;
+    }
+    public static void main(String[] args) {
+       
+       int nums[]={100};
+        System.out.println(play(nums,50));
+        
+    }
+}
