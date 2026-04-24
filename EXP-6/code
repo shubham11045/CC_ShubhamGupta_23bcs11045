@@ -1,0 +1,77 @@
+import java.util.*;
+
+public class FoxAndNames {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        String[] names = new String[n];
+
+        for (int i = 0; i < n; i++) {
+            names[i] = sc.next();
+        }
+
+        // Graph
+        List<Integer>[] graph = new ArrayList[26];
+        for (int i = 0; i < 26; i++) graph[i] = new ArrayList<>();
+
+        int[] indegree = new int[26];
+
+        // Build graph
+        for (int i = 0; i < n - 1; i++) {
+            String s = names[i];
+            String t = names[i + 1];
+
+            int len = Math.min(s.length(), t.length());
+            boolean found = false;
+
+            for (int j = 0; j < len; j++) {
+                if (s.charAt(j) != t.charAt(j)) {
+                    int u = s.charAt(j) - 'a';
+                    int v = t.charAt(j) - 'a';
+
+                    graph[u].add(v);
+                    indegree[v]++;
+                    found = true;
+                    break;
+                }
+            }
+
+            // Prefix issue
+            if (!found && s.length() > t.length()) {
+                System.out.println("Impossible");
+                return;
+            }
+        }
+
+        // Topological Sort (Kahn's Algorithm)
+        Queue<Integer> q = new LinkedList<>();
+
+        for (int i = 0; i < 26; i++) {
+            if (indegree[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        StringBuilder result = new StringBuilder();
+
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            result.append((char) (node + 'a'));
+
+            for (int nei : graph[node]) {
+                indegree[nei]--;
+                if (indegree[nei] == 0) {
+                    q.add(nei);
+                }
+            }
+        }
+
+        // If cycle exists
+        if (result.length() != 26) {
+            System.out.println("Impossible");
+        } else {
+            System.out.println(result.toString());
+        }
+    }
+}
